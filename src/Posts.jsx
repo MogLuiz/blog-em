@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import { useState } from "react";
 
 import { useQuery } from "react-query";
@@ -17,7 +18,11 @@ export function Posts() {
   const [selectedPost, setSelectedPost] = useState(null);
 
   // replace with useQuery
-  const { data, isError, error, isLoading } = useQuery(["posts", currentPage],() => fetchPosts(currentPage), { staleTime: 2000 });
+  const { data, isError, error, isLoading } = useQuery(
+    ["posts", currentPage],
+    () => fetchPosts(currentPage),
+    { staleTime: 2000 }
+  );
 
   if (isLoading) return <h3>Loading...</h3>;
   if (isError)
@@ -42,11 +47,17 @@ export function Posts() {
         ))}
       </ul>
       <div className="pages">
-        <button disabled onClick={() => {}}>
+        <button
+          disabled={currentPage <= 1}
+          onClick={() => setCurrentPage((previousValue) => previousValue - 1)}
+        >
           Previous page
         </button>
-        <span>Page {currentPage + 1}</span>
-        <button disabled onClick={() => {}}>
+        <span>Page {currentPage}</span>
+        <button
+          disabled={currentPage >= maxPostPage}
+          onClick={() => setCurrentPage((previousValue) => previousValue + 1)}
+        >
           Next page
         </button>
       </div>
