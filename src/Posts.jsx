@@ -25,13 +25,13 @@ export function Posts() {
     queryClient.prefetchQuery(["posts", nextPage], () => fetchPosts(nextPage))
   }, [currentPage, queryClient])
 
-  const { data, isError, error, isLoading, isFetching } = useQuery(
+  const { data, isError, error, isLoading } = useQuery(
     ["posts", currentPage],
     () => fetchPosts(currentPage),
     { staleTime: 2000, keepPreviousData: true }
   );
 
-  if (isFetching) return <h3>Fetching in progress...</h3>;
+  if (isLoading) return <h3>Loading...</h3>;
   if (isError)
     return (
       <>
