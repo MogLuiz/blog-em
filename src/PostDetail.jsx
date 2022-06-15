@@ -24,25 +24,31 @@ async function updatePost(postId) {
 }
 
 export function PostDetail({ post }) {
-  const { data, isLoading, isError, error } = useQuery(["comments", post.id], () =>
-    fetchComments(post.id)
+  const { data, isLoading, isError, error } = useQuery(
+    ["comments", post.id],
+    () => fetchComments(post.id)
   );
 
-  const deleteMutation = useMutation((postId) => deletePost(postId))
+  const deleteMutation = useMutation((postId) => deletePost(postId));
 
-  if(isLoading) return <h3>Loading!</h3>
+  if (isLoading) return <h3>Loading!</h3>;
 
-  if(isError) return (
-    <>
-    <h3>Error</h3>
-    <p>{error.toString()}</p>
-    </>
-  )
+  if (isError)
+    return (
+      <>
+        <h3>Error</h3>
+        <p>{error.toString()}</p>
+      </>
+    );
 
   return (
     <>
       <h3 style={{ color: "blue" }}>{post.title}</h3>
-      <button onClick={() => deleteMutation.mutate(post.id)}>Delete</button> <button>Update title</button>
+      <button onClick={() => deleteMutation.mutate(post.id)}>
+        Delete
+      </button>
+      {deleteMutation.isError &&  <p style={{ color: "red" }}>Error deleting the post</p>}
+      <button>Update title</button>
       <p>{post.body}</p>
       <h4>Comments</h4>
       {data.map((comment) => (
